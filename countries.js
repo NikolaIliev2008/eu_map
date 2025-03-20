@@ -134,7 +134,13 @@ const countryNeighbors = {
     "TR": ["BG", "GR"], // Turkey (Europe)
     "UA": ["PL", "SK", "HU", "RO", "MD", "BY", "RU"], // Ukraine
     "UK": ["IE"], // United Kingdom
-    "VA": ["IT"] // Vatican City
+    "VA": ["IT"], // Vatican City
+
+    //added
+    "XK": ["AL", "ME", "RS", "MK"], // Kosovo
+    "IS": [], // Iceland (Island)
+    "LI": ["AT", "CH"], // Liechtenstein
+    "GE": ["RU", "AM", "AZ", "TR"], // Georgia
 };
 
 console.log(countryNeighbors);
