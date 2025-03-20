@@ -48,7 +48,6 @@
 </head>
 <body>
     <div class="tooltip" id="tooltip"></div>
-    <div class="info-table" id="infoTable"></div>
 	<!-- SVG EU Map -->
 	<svg id="eu-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
 		<path d="M200,200 L300,200 L300,300 L200,300 Z" />
@@ -574,6 +573,8 @@
         const tooltip = document.getElementById('tooltip');
         const countries = document.querySelectorAll('#eu-map path');
         let chartInstance = null;
+        let lastMouseX = 0, lastMouseY = 0;
+        let isTooltipVisible = false;
 
         countries.forEach(country => {
             country.addEventListener('mouseenter', (e) => {
@@ -595,9 +596,10 @@
                         borderWidth: 1
                     }]
                 };
-
+                
                 tooltip.innerHTML = `${countryName}<canvas id="priceChart" width="400" height="200"></canvas>`;
                 tooltip.style.display = 'block';
+                isTooltipVisible = true;
 
                 setTimeout(() => {
                     const ctx = document.getElementById("priceChart").getContext("2d");
@@ -620,26 +622,29 @@
                             }
                         }
                     });
-                }, 10);
+                }, 50);
             });
 
             country.addEventListener('mousemove', (e) => {
-                tooltip.style.left = e.pageX + 10 + 'px';
-                tooltip.style.top = e.pageY + 10 + 'px';
+                const deltaX = Math.abs(e.pageX - lastMouseX);
+                const deltaY = Math.abs(e.pageY - lastMouseY);
+                if (deltaX > 5 || deltaY > 5) {
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY + 10 + 'px';
+                    lastMouseX = e.pageX;
+                    lastMouseY = e.pageY;
+                }
             });
 
             country.addEventListener('mouseleave', () => {
                 tooltip.style.display = 'none';
+                isTooltipVisible = false;
                 if (chartInstance) chartInstance.destroy();
             });
         });
 
-<<<<<<< HEAD
         // SVG Dragging Functionality
         const svg = document.getElementById('eu-map');
-=======
-		const svg = d3.select("#map");
->>>>>>> afcfd836271a6f2fd19cd7ca10b3969a87f09e60
         let isDragging = false;
         let startX, startY, initialViewBox;
 
@@ -653,8 +658,8 @@
 
         svg.addEventListener('mousemove', (e) => {
             if (isDragging) {
-                const dx = (e.clientX - startX) * 2;
-                const dy = (e.clientY - startY) * 2;
+                const dx = (e.clientX - startX) * 1.5;
+                const dy = (e.clientY - startY) * 1.5;
                 svg.setAttribute('viewBox', `${initialViewBox[0] - dx} ${initialViewBox[1] - dy} 1000 800`);
             }
         });
@@ -668,23 +673,6 @@
             isDragging = false;
             svg.style.cursor = 'grab';
         });
-<<<<<<< HEAD
     </script>
-=======
-
-        const container = d3.select("#map-content");
-
-        const zoom = d3.zoom()
-            .scaleExtent([0.5, 5]) // Limit zoom scale
-            .on("zoom", (event) => {
-                container.attr("transform", event.transform);
-            });
-
-        svg.call(zoom)
-            .call(zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1));
-
-	</script>
->>>>>>> afcfd836271a6f2fd19cd7ca10b3969a87f09e60
 </body>
-
 </html>
