@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<title>Full Page Map</title>
 	<style>
 		html,
@@ -574,18 +575,81 @@
 	</svg>
 
 	<script>
+
+		// Tooltip functionality on hover
 		const tooltip = document.getElementById('tooltip');
-		document.querySelectorAll('#eu-map path').forEach(path => {
-			path.addEventListener('mousemove', (event) => {
+		const countries = document.querySelectorAll('#eu-map path');
+		// Sample price data for each year
+
+		countries.forEach(country => {
+			country.addEventListener('mouseenter', (e) => {
+				const countryName = e.target.getAttribute('title');
+				const priceData = {
+					labels: ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"], // years
+					datasets: [{
+						label: countryName,
+						data: [120, 150, 170, 130, 180, 160, 200, 210, 250], // prices for each year
+						backgroundColor: "rgba(255, 0, 0, 0.2)",  // Bar color
+						borderColor: "rgba(255, 0, 0, 1)",  // Bar border color
+						borderWidth: 1
+					},
+					{
+						label: countryName + 'Nab',
+						data: [120, 156, 173, 130, 190, 160, 210, 210, 240], // prices for each year
+						backgroundColor: "rgba(0, 255, 0, 0.2)",  // Bar color
+						borderColor: "rgba(0, 255, 0, 1)",  // Bar border color
+						borderWidth: 1
+					}]
+				};
+
+				const config = {
+					type: "line",
+					data: priceData,
+					options: {
+						responsive: true,
+						plugins: {
+							legend: {
+								labels: {
+									color: 'white' // Change legend text color
+								}
+							}
+						},
+						scales: {
+							x: {
+								ticks: {
+									color: 'white' // Change x-axis label text color
+								}
+							},
+							y: {
+								ticks: {
+									color: 'white' // Change y-axis label text color
+								},
+								beginAtZero: true,
+								title: {
+									display: true,
+									text: "Price (in Euro)",
+									color: 'white'
+								}
+							}
+						}
+					}
+				};
+				tooltip.innerHTML = countryName + '<canvas id="priceChart" width="400" height="200"></canvas>';
 				tooltip.style.display = 'block';
-				tooltip.style.left = event.pageX + 10 + 'px';
-				tooltip.style.top = event.pageY + 10 + 'px';
-				tooltip.textContent = path.getAttribute('title');
+				const priceChart = new Chart(document.getElementById("priceChart"), config);
 			});
-			path.addEventListener('mouseleave', () => {
+
+			country.addEventListener('mousemove', (e) => {
+				tooltip.style.left = e.pageX + 10 + 'px';
+				tooltip.style.top = e.pageY + 10 + 'px';
+			});
+
+			country.addEventListener('mouseleave', () => {
 				tooltip.style.display = 'none';
 			});
 		});
+
+
 	</script>
 </body>
 
