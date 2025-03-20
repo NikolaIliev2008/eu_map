@@ -51,6 +51,7 @@
     <div class="info-table" id="infoTable"></div>
 	<!-- SVG EU Map -->
 	<svg id="eu-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
+		<path d="M200,200 L300,200 L300,300 L200,300 Z" />
 		<!-- Example Paths (You should replace these with the actual path data) -->
 		<!-- The 'd' attribute for each path needs to be the accurate coordinates for each country's border -->
 
@@ -633,8 +634,12 @@
             });
         });
 
+<<<<<<< HEAD
         // SVG Dragging Functionality
         const svg = document.getElementById('eu-map');
+=======
+		const svg = d3.select("#map");
+>>>>>>> afcfd836271a6f2fd19cd7ca10b3969a87f09e60
         let isDragging = false;
         let startX, startY, initialViewBox;
 
@@ -663,7 +668,23 @@
             isDragging = false;
             svg.style.cursor = 'grab';
         });
+<<<<<<< HEAD
     </script>
+=======
+
+        const container = d3.select("#map-content");
+
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 5]) // Limit zoom scale
+            .on("zoom", (event) => {
+                container.attr("transform", event.transform);
+            });
+
+        svg.call(zoom)
+            .call(zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1));
+
+	</script>
+>>>>>>> afcfd836271a6f2fd19cd7ca10b3969a87f09e60
 </body>
 
 </html>
