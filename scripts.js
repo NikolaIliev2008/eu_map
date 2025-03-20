@@ -90,7 +90,7 @@ window.onload = function () {
         if (isDragging) {
             const dx = (e.clientX - startX) * 1.5;
             const dy = (e.clientY - startY) * 1.5;
-            svg.setAttribute('viewBox', `${initialViewBox[0] - dx} ${initialViewBox[1] - dy} 1000 800`);
+            svg.setAttribute('viewBox', `${initialViewBox[0] - dx} ${initialViewBox[1] - dy} ${initialViewBox[2]} ${initialViewBox[3]}`);
         }
     });
 
@@ -104,5 +104,48 @@ window.onload = function () {
         svg.style.cursor = 'grab';
     });
 
+
+    //SVG Zoom 
+
+    const viewBox = svg.viewBox.baseVal;
+
+    function zoomIn() {
+        viewBox.width *= 0.9;
+        viewBox.height *= 0.9;
+        viewBox.x += viewBox.width * 0.05;
+        viewBox.y += viewBox.height * 0.05;
+    };
+
+    function zoomOut() {
+        viewBox.width /= 0.9;
+        viewBox.height /= 0.9;
+        viewBox.x -= viewBox.width * 0.05;
+        viewBox.y -= viewBox.height * 0.05;
+    };
+
+    svg.addEventListener("wheel", (e) => {
+        e.preventDefault();
+
+        if (e.deltaY < 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    });
+
+    document.getElementById('zoom-in-btn').addEventListener("click", (e) => {
+        e.preventDefault();
+        zoomIn();
+    });
+
+    document.getElementById('zoom-out-btn').addEventListener("click", (e) => {
+        e.preventDefault();
+        zoomOut();
+    });
+
+    document.getElementById('zoom-reset-btn').addEventListener("click", (e) => {
+        e.preventDefault();
+        svg.setAttribute("viewBox", "0 0 1000 800");
+    });
 
 };
