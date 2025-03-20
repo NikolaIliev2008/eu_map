@@ -1,61 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<title>Full Page Map</title>
-	<style>
-		html,
-		body {
-			margin: 0;
-			padding: 0;
-			width: 100%;
-			height: 100%;
-			background-color: #87CEEB;
-			/* Светлосин фон */
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			position: relative;
-		}
-
-		#eu-map {
-			width: 100vw;
-			height: 100vh;
-		}
-
-		path {
-			fill: #f0f0f0;
-			/* Цвят на държавите */
-			stroke: #000;
-			stroke-width: 0.5;
-			transition: all 0.3s ease;
-		}
-
-		path:hover {
-			fill: lightgreen;
-			stroke-width: 1;
-		}
-
-		.tooltip {
-			position: absolute;
-			background-color: rgba(0, 0, 0, 0.7);
-			color: white;
-			padding: 5px;
-			border-radius: 4px;
-			display: none;
-			pointer-events: none;
-			font-size: 14px;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Full Page Map</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #87CEEB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        #eu-map {
+            width: 100vw;
+            height: 100vh;
+            cursor: grab;
+        }
+        path {
+            fill: #f0f0f0;
+            stroke: #000;
+            stroke-width: 0.5;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        path:hover {
+            fill: lightgreen;
+            stroke-width: 1;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            pointer-events: none;
+            font-size: 14px;
+        }
+    </style>
 </head>
-
 <body>
-	<div class="tooltip" id="tooltip"></div>
+    <div class="tooltip" id="tooltip"></div>
 	<!-- SVG EU Map -->
 	<svg id="eu-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
+		<path d="M200,200 L300,200 L300,300 L200,300 Z" />
 		<!-- Example Paths (You should replace these with the actual path data) -->
 		<!-- The 'd' attribute for each path needs to be the accurate coordinates for each country's border -->
 
@@ -575,82 +570,109 @@
 	</svg>
 
 	<script>
+        const tooltip = document.getElementById('tooltip');
+        const countries = document.querySelectorAll('#eu-map path');
+        let chartInstance = null;
+        let lastMouseX = 0, lastMouseY = 0;
+        let isTooltipVisible = false;
 
-		// Tooltip functionality on hover
-		const tooltip = document.getElementById('tooltip');
-		const countries = document.querySelectorAll('#eu-map path');
-		// Sample price data for each year
+        countries.forEach(country => {
+            country.addEventListener('mouseenter', (e) => {
+                const countryName = e.target.getAttribute('title');
+                const priceData = {
+                    labels: ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"],
+                    datasets: [{
+                        label: countryName,
+                        data: [120, 150, 170, 130, 180, 160, 200, 210, 250],
+                        backgroundColor: "rgba(255, 0, 0, 0.2)",
+                        borderColor: "rgba(255, 0, 0, 1)",
+                        borderWidth: 1
+                    },
+                    {
+                        label: countryName + ' Nab',
+                        data: [120, 156, 173, 130, 190, 160, 210, 210, 240],
+                        backgroundColor: "rgba(0, 255, 0, 0.2)",
+                        borderColor: "rgba(0, 255, 0, 1)",
+                        borderWidth: 1
+                    }]
+                };
+                
+                tooltip.innerHTML = `${countryName}<canvas id="priceChart" width="400" height="200"></canvas>`;
+                tooltip.style.display = 'block';
+                isTooltipVisible = true;
 
-		countries.forEach(country => {
-			country.addEventListener('mouseenter', (e) => {
-				const countryName = e.target.getAttribute('title');
-				const priceData = {
-					labels: ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"], // years
-					datasets: [{
-						label: countryName,
-						data: [120, 150, 170, 130, 180, 160, 200, 210, 250], // prices for each year
-						backgroundColor: "rgba(255, 0, 0, 0.2)",  // Bar color
-						borderColor: "rgba(255, 0, 0, 1)",  // Bar border color
-						borderWidth: 1
-					},
-					{
-						label: countryName + 'Nab',
-						data: [120, 156, 173, 130, 190, 160, 210, 210, 240], // prices for each year
-						backgroundColor: "rgba(0, 255, 0, 0.2)",  // Bar color
-						borderColor: "rgba(0, 255, 0, 1)",  // Bar border color
-						borderWidth: 1
-					}]
-				};
+                setTimeout(() => {
+                    const ctx = document.getElementById("priceChart").getContext("2d");
+                    if (chartInstance) chartInstance.destroy();
+                    chartInstance = new Chart(ctx, {
+                        type: "line",
+                        data: priceData,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { labels: { color: 'white' } }
+                            },
+                            scales: {
+                                x: { ticks: { color: 'white' } },
+                                y: {
+                                    ticks: { color: 'white' },
+                                    beginAtZero: true,
+                                    title: { display: true, text: "Price (in Euro)", color: 'white' }
+                                }
+                            }
+                        }
+                    });
+                }, 50);
+            });
 
-				const config = {
-					type: "line",
-					data: priceData,
-					options: {
-						responsive: true,
-						plugins: {
-							legend: {
-								labels: {
-									color: 'white' // Change legend text color
-								}
-							}
-						},
-						scales: {
-							x: {
-								ticks: {
-									color: 'white' // Change x-axis label text color
-								}
-							},
-							y: {
-								ticks: {
-									color: 'white' // Change y-axis label text color
-								},
-								beginAtZero: true,
-								title: {
-									display: true,
-									text: "Price (in Euro)",
-									color: 'white'
-								}
-							}
-						}
-					}
-				};
-				tooltip.innerHTML = countryName + '<canvas id="priceChart" width="400" height="200"></canvas>';
-				tooltip.style.display = 'block';
-				const priceChart = new Chart(document.getElementById("priceChart"), config);
-			});
+            country.addEventListener('mousemove', (e) => {
+                const deltaX = Math.abs(e.pageX - lastMouseX);
+                const deltaY = Math.abs(e.pageY - lastMouseY);
+                if (deltaX > 5 || deltaY > 5) {
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY + 10 + 'px';
+                    lastMouseX = e.pageX;
+                    lastMouseY = e.pageY;
+                }
+            });
 
-			country.addEventListener('mousemove', (e) => {
-				tooltip.style.left = e.pageX + 10 + 'px';
-				tooltip.style.top = e.pageY + 10 + 'px';
-			});
+            country.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+                isTooltipVisible = false;
+                if (chartInstance) chartInstance.destroy();
+            });
+        });
 
-			country.addEventListener('mouseleave', () => {
-				tooltip.style.display = 'none';
-			});
-		});
+        // SVG Dragging Functionality
+        const svg = document.getElementById('eu-map');
+        let isDragging = false;
+        let startX, startY, initialViewBox;
 
+        svg.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialViewBox = svg.getAttribute('viewBox').split(' ').map(parseFloat);
+            svg.style.cursor = 'grabbing';
+        });
 
-	</script>
+        svg.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const dx = (e.clientX - startX) * 1.5;
+                const dy = (e.clientY - startY) * 1.5;
+                svg.setAttribute('viewBox', `${initialViewBox[0] - dx} ${initialViewBox[1] - dy} 1000 800`);
+            }
+        });
+
+        svg.addEventListener('mouseup', () => {
+            isDragging = false;
+            svg.style.cursor = 'grab';
+        });
+
+        svg.addEventListener('mouseleave', () => {
+            isDragging = false;
+            svg.style.cursor = 'grab';
+        });
+    </script>
 </body>
-
 </html>
