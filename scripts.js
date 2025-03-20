@@ -100,6 +100,18 @@ window.onload = function () {
         //Color each country based on the price index 
         //const index = countryIndexData.find(x=>x.id === country.id)?.index;
         //country.setAttribute("fill", getColorByPriceIndex(index));
+
+        //Side bar control
+        const sideMenu = document.getElementById("side-menu");
+
+        country.addEventListener("click", () => {
+            if (sideMenu.style.left === "0px") {
+                sideMenu.style.left = "-250px"; // Hide menu
+            } else {
+                sideMenu.style.left = "0px"; // Show menu
+            }
+        });
+
     });
 
     // SVG Dragging Functionality
@@ -175,6 +187,18 @@ window.onload = function () {
     document.getElementById('zoom-reset-btn').addEventListener("click", (e) => {
         e.preventDefault();
         svg.setAttribute("viewBox", "0 0 1000 800");
+    });
+
+    //Side bar open close control
+    const menuToggle = document.getElementById("menu-toggle");
+    const sideMenu = document.getElementById("side-menu");
+
+    menuToggle.addEventListener("click", () => {
+        if (sideMenu.style.left === "0px") {
+            sideMenu.style.left = "-250px"; // Hide menu
+        } else {
+            sideMenu.style.left = "0px"; // Show menu
+        }
     });
 
 };
