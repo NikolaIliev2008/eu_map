@@ -649,7 +649,37 @@
 			});
 		});
 
+		const svg = document.getElementById('eu-map');
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
 
+        svg.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialX = svg.getAttribute('viewBox').split(' ')[0];
+            initialY = svg.getAttribute('viewBox').split(' ')[1];
+            svg.style.cursor = 'grabbing';
+        });
+        svg.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                const newX = parseFloat(initialX) - dx;
+                const newY = parseFloat(initialY) - dy;
+                svg.setAttribute('viewBox', `${newX} ${newY} 1000 800`);
+            }
+        });
+
+        svg.addEventListener('mouseup', () => {
+            isDragging = false;
+            svg.style.cursor = 'grab';
+        });
+
+        svg.addEventListener('mouseleave', () => {
+            isDragging = false;
+            svg.style.cursor = 'grab';
+        });
 	</script>
 </body>
 
