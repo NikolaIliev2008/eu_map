@@ -146,9 +146,9 @@ const countryNeighbors = {
 console.log(countryNeighbors);
 
 //when the page is loaded , then the magic number have to be calculated and shown
-window.onload = function () {
+// window.onload = function () {
 
-    console.log("The entire page is fully loaded.");
+//     console.log("The entire page is fully loaded.");
 
 
-};
+// };

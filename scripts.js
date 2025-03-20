@@ -1,0 +1,108 @@
+window.onload = function () {
+
+    const tooltip = document.getElementById('tooltip');
+    const countries = document.querySelectorAll('#eu-map path');
+    let chartInstance = null;
+    let lastMouseX = 0, lastMouseY = 0;
+    let isTooltipVisible = false;
+
+    countries.forEach(country => {
+        country.addEventListener('mouseenter', (e) => {
+            const countryName = e.target.getAttribute('title');
+            const priceData = {
+                labels: ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"],
+                datasets: [{
+                    label: countryName,
+                    data: [120, 150, 170, 130, 180, 160, 200, 210, 250],
+                    backgroundColor: "rgba(255, 0, 0, 0.2)",
+                    borderColor: "rgba(255, 0, 0, 1)",
+                    borderWidth: 1
+                },
+                {
+                    label: countryName + ' Nab',
+                    data: [120, 156, 173, 130, 190, 160, 210, 210, 240],
+                    backgroundColor: "rgba(0, 255, 0, 0.2)",
+                    borderColor: "rgba(0, 255, 0, 1)",
+                    borderWidth: 1
+                }]
+            };
+
+            tooltip.innerHTML = `${countryName}<canvas id="priceChart" width="400" height="200"></canvas>`;
+            tooltip.style.display = 'block';
+            isTooltipVisible = true;
+
+            setTimeout(() => {
+                const ctx = document.getElementById("priceChart").getContext("2d");
+                if (chartInstance) chartInstance.destroy();
+                chartInstance = new Chart(ctx, {
+                    type: "line",
+                    data: priceData,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        },
+                        scales: {
+                            x: { ticks: { color: 'white' } },
+                            y: {
+                                ticks: { color: 'white' },
+                                beginAtZero: true,
+                                title: { display: true, text: "Price (in Euro)", color: 'white' }
+                            }
+                        }
+                    }
+                });
+            }, 50);
+        });
+
+        country.addEventListener('mousemove', (e) => {
+            const deltaX = Math.abs(e.pageX - lastMouseX);
+            const deltaY = Math.abs(e.pageY - lastMouseY);
+            if (deltaX > 5 || deltaY > 5) {
+                tooltip.style.left = e.pageX + 10 + 'px';
+                tooltip.style.top = e.pageY + 10 + 'px';
+                lastMouseX = e.pageX;
+                lastMouseY = e.pageY;
+            }
+        });
+
+        country.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+            isTooltipVisible = false;
+            if (chartInstance) chartInstance.destroy();
+        });
+    });
+
+    // SVG Dragging Functionality
+    const svg = document.getElementById('eu-map');
+    let isDragging = false;
+    let startX, startY, initialViewBox;
+
+    svg.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        initialViewBox = svg.getAttribute('viewBox').split(' ').map(parseFloat);
+        svg.style.cursor = 'grabbing';
+    });
+
+    svg.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const dx = (e.clientX - startX) * 1.5;
+            const dy = (e.clientY - startY) * 1.5;
+            svg.setAttribute('viewBox', `${initialViewBox[0] - dx} ${initialViewBox[1] - dy} 1000 800`);
+        }
+    });
+
+    svg.addEventListener('mouseup', () => {
+        isDragging = false;
+        svg.style.cursor = 'grab';
+    });
+
+    svg.addEventListener('mouseleave', () => {
+        isDragging = false;
+        svg.style.cursor = 'grab';
+    });
+
+
+};

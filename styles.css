@@ -1,0 +1,38 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #87CEEB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+#eu-map {
+    width: 100vw;
+    height: 100vh;
+    cursor: grab;
+}
+path {
+    fill: #f0f0f0;
+    stroke: #000;
+    stroke-width: 0.5;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+path:hover {
+    fill: lightgreen;
+    stroke-width: 1;
+}
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+    pointer-events: none;
+    font-size: 14px;
+}

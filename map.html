@@ -3,54 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="scripts.js"></script>
     <title>Full Page Map</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #87CEEB;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        #eu-map {
-            width: 100vw;
-            height: 100vh;
-            cursor: grab;
-        }
-        path {
-            fill: #f0f0f0;
-            stroke: #000;
-            stroke-width: 0.5;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        path:hover {
-            fill: lightgreen;
-            stroke-width: 1;
-        }
-        .tooltip {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 10px;
-            border-radius: 4px;
-            display: none;
-            pointer-events: none;
-            font-size: 14px;
-        }
-    </style>
 </head>
 <body>
     <div class="tooltip" id="tooltip"></div>
 	<!-- SVG EU Map -->
 	<svg id="eu-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
-		<path d="M200,200 L300,200 L300,300 L200,300 Z" />
+		<!-- <path d="M200,200 L300,200 L300,300 L200,300 Z" /> -->
 		<!-- Example Paths (You should replace these with the actual path data) -->
 		<!-- The 'd' attribute for each path needs to be the accurate coordinates for each country's border -->
 
@@ -569,7 +531,7 @@
 		<!-- Add more country paths with correct d attribute values for real borders -->
 	</svg>
 
-	<script>
+	<!-- <script>
         const tooltip = document.getElementById('tooltip');
         const countries = document.querySelectorAll('#eu-map path');
         let chartInstance = null;
@@ -673,6 +635,6 @@
             isDragging = false;
             svg.style.cursor = 'grab';
         });
-    </script>
+    </script> -->
 </body>
 </html>
