@@ -1,3 +1,28 @@
+
+//Color each country based on the price index Take this from database
+const countryIndexData = [
+    { id: "US", index: 5 },
+    { id: "FR", index: 15 },
+    { id: "IT", index: 45 },
+    { id: "AD", index: 3 },
+    { id: "AE", index: 12 },
+];
+
+function getColorByPriceIndex(index) {
+    if (index < 10) {
+        return ' #ff0088';
+    }
+    else if (index >= 10 && index < 20) {
+        return ' #aa12de';
+    }
+
+    else {
+        return 'white';
+    }
+}
+
+
+
 window.onload = function () {
 
     const tooltip = document.getElementById('tooltip');
@@ -71,6 +96,10 @@ window.onload = function () {
             isTooltipVisible = false;
             if (chartInstance) chartInstance.destroy();
         });
+
+        //Color each country based on the price index 
+        //const index = countryIndexData.find(x=>x.id === country.id)?.index;
+        //country.setAttribute("fill", getColorByPriceIndex(index));
     });
 
     // SVG Dragging Functionality
