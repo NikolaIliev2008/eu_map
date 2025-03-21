@@ -111,6 +111,7 @@ window.onload = function () {
                 sideMenu.style.left = "0px"; // Show menu
             }
         });
+        
 
     });
 
@@ -193,12 +194,12 @@ window.onload = function () {
     const menuToggle = document.getElementById("menu-toggle");
     const sideMenu = document.getElementById("side-menu");
 
-    menuToggle.addEventListener("click", () => {
-        if (sideMenu.style.left === "0px") {
-            sideMenu.style.left = "-250px"; // Hide menu
-        } else {
-            sideMenu.style.left = "0px"; // Show menu
-        }
-    });
+    // menuToggle.addEventListener("click", () => {
+    //     if (sideMenu.style.left === "0px") {
+    //         sideMenu.style.left = "-250px"; // Hide menu
+    //     } else {
+    //         sideMenu.style.left = "0px"; // Show menu
+    //     }
+    // });
 
 };
