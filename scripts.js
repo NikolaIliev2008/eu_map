@@ -20,6 +20,7 @@ function getColorByPriceIndex(index) {
 window.onload = function () {
     const tooltip = document.getElementById('tooltip');
     const countries = document.querySelectorAll('#eu-map path');
+    const buyButtons = document.getElementById("btn-container");
     let chartInstance = null;
     let chartInstanceN = null;
     let lastMouseX = 0, lastMouseY = 0;
@@ -129,7 +130,7 @@ window.onload = function () {
                         options: {
                             responsive: true,
                             plugins: {
-                                legend: { labels: { color: 'black' } }
+                                legend: { labels: { color: 'black' , font: {size:10}, boxWidth: 10} }
                             },
                             scales: {
                                 x: { ticks: { color: 'black' } },
@@ -149,7 +150,7 @@ window.onload = function () {
                         options: {
                             responsive: true,
                             plugins: {
-                                legend: { labels: { color: 'black' } }
+                                legend: { labels: { color: 'black', font: {size: 10} , boxWidth: 10}  }
                             },
                             scales: {
                                 x: { ticks: { color: 'black' } },
@@ -162,6 +163,9 @@ window.onload = function () {
                         }
                     });
                 }, 50);
+
+                //make buttons visible
+                buyButtons.style.display = 'flex';
             } catch (error) {
                 console.error('Error fetching data:', error);
                 tooltip.innerHTML = `Failed to load data for ${countryName}`;
@@ -185,6 +189,7 @@ window.onload = function () {
             isTooltipVisible = false;
             if (chartInstance) chartInstance.destroy();
             if (chartInstanceN) chartInstanceN.destroy();
+            buyButtons.style.display = 'none';
         });
 
         // Sidebar control
