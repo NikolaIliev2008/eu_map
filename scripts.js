@@ -106,7 +106,7 @@ window.onload = function () {
 
         country.addEventListener("click", () => {
             if (sideMenu.style.left === "0px") {
-                sideMenu.style.left = "-250px"; // Hide menu
+                sideMenu.style.left = "-38%"; // Hide menu
             } else {
                 sideMenu.style.left = "0px"; // Show menu
             }
@@ -198,7 +198,7 @@ window.onload = function () {
     if (menuToggle) {
         menuToggle.addEventListener("click", () => {
             if (sideMenu.style.left === "0px") {
-                sideMenu.style.left = "-250px"; // Hide menu
+                sideMenu.style.left = "-38%"; // Hide menu
             } else {
                 sideMenu.style.left = "0px"; // Show menu
             }
@@ -207,7 +207,7 @@ window.onload = function () {
 
     if (closeSidebar) {
         closeSidebar.addEventListener("click", () => {
-            sideMenu.style.left = "-250px"; // Hide menu
+            sideMenu.style.left = "-38%"; // Hide menu
         });
     }
 
