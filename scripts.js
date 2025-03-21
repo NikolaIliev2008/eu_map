@@ -189,16 +189,20 @@ window.onload = function () {
         svg.setAttribute("viewBox", "0 0 1000 800");
     });
 
-    //Side bar open close control
-    const menuToggle = document.getElementById("menu-toggle");
+    // Side bar open close control
     const sideMenu = document.getElementById("side-menu");
-
-    menuToggle.addEventListener("click", () => {
-        if (sideMenu.style.left === "0px") {
-            sideMenu.style.left = "-250px"; // Hide menu
-        } else {
-            sideMenu.style.left = "0px"; // Show menu
-        }
+    const closeSidebar = document.getElementById("close-sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
+    
+    if (menuToggle) {
+        menuToggle.addEventListener("click", () => {
+            sideMenu.style.left = "0px";
+        });
+    }
+    
+    closeSidebar.addEventListener("click", () => {
+        sideMenu.style.left = "-250px";
     });
+
 
 };
