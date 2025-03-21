@@ -99,13 +99,20 @@ path:hover {
     position: absolute;
     top: 10px;
     right: 10px;
-<<<<<<< HEAD
     width: 30px;  /* Прави бутона квадратен */
     height: 30px; /* Прави бутона квадратен */
-=======
->>>>>>> 209c2150decc4f3a20b92f3a04ffe12160ab8809
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+#close-sidebar:hover {
+    background-color: red;
+    color: white;
 }
