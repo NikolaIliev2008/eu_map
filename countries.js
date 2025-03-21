@@ -95,7 +95,8 @@ const countryNeighbors = {
     "AL": ["ME", "RS", "MK", "GR"], // Albania
     "AT": ["DE", "CZ", "SK", "HU", "SI", "IT", "CH", "LI"], // Austria
     "BA": ["HR", "ME", "RS"], // Bosnia and Herzegovina
-    "BE": ["FR", "LU", "DE", "NL"], // Belgium
+    "BE": ["FR", "LU", "DE", "NL"], // Belgiu
+    // m
     "BG": ["RO", "RS", "MK", "GR", "TR"], // Bulgaria
     "BY": ["PL", "LT", "LV", "RU", "UA"], // Belarus
     "CH": ["FR", "DE", "AT", "IT", "LI"], // Switzerland
