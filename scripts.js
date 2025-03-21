@@ -120,6 +120,43 @@ window.onload = function () {
             if (chartInstance) chartInstance.destroy();
         });
 
+<<<<<<< HEAD
+        //Color each country based on the price index 
+        //const index = countryIndexData.find(x=>x.id === country.id)?.index;
+        //country.setAttribute("fill", getColorByPriceIndex(index));
+
+        //Side bar control
+        country.addEventListener("click", () => {
+            const bbox = country.getBBox();
+            const padding = 20;
+            const newX = bbox.x - padding;
+            const newY = bbox.y - padding;
+            const newWidth = bbox.width + 2 * padding;
+            const newHeight = bbox.height + 2 * padding;
+        
+            let currentViewBox = svg.getAttribute("viewBox").split(" ").map(Number);
+            let steps = 20;
+            let step = 0;
+        
+            function animateZoom() {
+                step++;
+                let progress = step / steps;
+        
+                let interpolatedX = currentViewBox[0] + (newX - currentViewBox[0]) * progress;
+                let interpolatedY = currentViewBox[1] + (newY - currentViewBox[1]) * progress;
+                let interpolatedWidth = currentViewBox[2] + (newWidth - currentViewBox[2]) * progress;
+                let interpolatedHeight = currentViewBox[3] + (newHeight - currentViewBox[3]) * progress;
+        
+                svg.setAttribute("viewBox", `${interpolatedX} ${interpolatedY} ${interpolatedWidth} ${interpolatedHeight}`);
+        
+                if (step < steps) {
+                    requestAnimationFrame(animateZoom);
+                }
+            }
+        
+            requestAnimationFrame(animateZoom);
+            sideMenu.style.left = "0px";
+=======
         // Sidebar control
         const sideMenu = document.getElementById("side-menu");
 
@@ -129,6 +166,7 @@ window.onload = function () {
             } else {
                 sideMenu.style.left = "0px"; // Show menu
             }
+>>>>>>> 991d8d8aafde791ffeafd57f70683cc8e159d233
         });
     });
 
