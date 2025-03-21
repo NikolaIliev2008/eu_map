@@ -99,20 +99,8 @@ path:hover {
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 30px;
-    height: 30px;
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-}
-
-#close-sidebar:hover {
-    background-color: rgb(199, 7, 7);
-    color: white;
 }
