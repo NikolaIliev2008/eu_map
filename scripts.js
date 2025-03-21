@@ -120,7 +120,6 @@ window.onload = function () {
             if (chartInstance) chartInstance.destroy();
         });
 
-<<<<<<< HEAD
         //Color each country based on the price index 
         //const index = countryIndexData.find(x=>x.id === country.id)?.index;
         //country.setAttribute("fill", getColorByPriceIndex(index));
@@ -156,7 +155,6 @@ window.onload = function () {
         
             requestAnimationFrame(animateZoom);
             sideMenu.style.left = "0px";
-=======
         // Sidebar control
         const sideMenu = document.getElementById("side-menu");
 
@@ -166,7 +164,6 @@ window.onload = function () {
             } else {
                 sideMenu.style.left = "0px"; // Show menu
             }
->>>>>>> 991d8d8aafde791ffeafd57f70683cc8e159d233
         });
     });
 
