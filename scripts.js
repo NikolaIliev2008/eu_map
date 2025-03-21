@@ -192,25 +192,23 @@ window.onload = function () {
 
     // Side bar open close control
     const sideMenu = document.getElementById("side-menu");
-const closeSidebar = document.getElementById("close-sidebar");
-const menuToggle = document.getElementById("menu-toggle");
+    const closeSidebar = document.getElementById("close-sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
 
-if (menuToggle) {
-    menuToggle.addEventListener("click", () => {
-        if (sideMenu.style.left === "0px") {
+    if (menuToggle) {
+        menuToggle.addEventListener("click", () => {
+            if (sideMenu.style.left === "0px") {
+                sideMenu.style.left = "-250px"; // Hide menu
+            } else {
+                sideMenu.style.left = "0px"; // Show menu
+            }
+        });
+    }
+
+    if (closeSidebar) {
+        closeSidebar.addEventListener("click", () => {
             sideMenu.style.left = "-250px"; // Hide menu
-        } else {
-            sideMenu.style.left = "0px"; // Show menu
-        }
-    });
-}
-
-if (closeSidebar) {
-    closeSidebar.addEventListener("click", () => {
-        sideMenu.style.left = "-250px"; // Hide menu
-    });
-}
-
-
+        });
+    }
 
 };

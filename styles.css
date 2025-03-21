@@ -94,8 +94,8 @@ path:hover {
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 30px;
-    height: 30px; 
+    width: 30px;  /* Прави бутона квадратен */
+    height: 30px; /* Прави бутона квадратен */
     background: none;
     border: none;
     font-size: 24px;
