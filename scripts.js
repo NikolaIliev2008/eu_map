@@ -184,6 +184,7 @@ window.onload = function () {
             tooltip.style.display = 'none';
             isTooltipVisible = false;
             if (chartInstance) chartInstance.destroy();
+            if (chartInstanceN) chartInstanceN.destroy();
         });
 
         // Sidebar control
