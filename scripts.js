@@ -39,12 +39,12 @@ window.onload = function () {
                 //forEach dataN -> request
                 // console.log(`DataN: ${dataN}`);
                 let avgPrices = [];
-                let labelsn = [];
+                // let labelsn = [];
                 for(let v of dataN){
-                    const x = await fetch(`http://localhost:3006/neigh/${v.ID_neighbor_country}`);
+                    const x = await fetch(`http://localhost:3006/user/${v.ID_neighbor_country}`);
                     const dataX = await x.json();
-                    avgPrices = dataX.map(entry => (entry.Price_2_rooms + entry.Price_3_rooms +  entry.Price_house) / 3); // Prices for 2-room properties
-                    labelsn.push(v.ID_neighbor_country);
+                    avgPrices.push(dataX.map(entry => (entry.Price_2_rooms + entry.Price_3_rooms +  entry.Price_house) / 3)); // Prices for 2-room properties
+                    // labelsn.push(v.ID_neighbor_country);
                 }
                 
                 // Prepare data for the chart
@@ -53,7 +53,7 @@ window.onload = function () {
                 const price3Rooms = data.map(entry => entry.Price_3_rooms); // Prices for 3-room properties
                 const priceHouse = data.map(entry => entry.Price_house); // Prices for houses
 
-                const currPrice = data.map(entry => (data.Price_2_rooms + data.Price_3_rooms +  data.Price_house) / 3); // Prices for 2-room properties
+                const currPrice = data.map(entry => (entry.Price_2_rooms + entry.Price_3_rooms +  entry.Price_house) / 3); // Prices for 2-room properties
                 const priceDataN = {
                     labels,
                     datasets : []
@@ -67,19 +67,22 @@ window.onload = function () {
                     borderColor: "rgba(255, 0, 0, 1)",
                     borderWidth: 1
                 });
-                console.log(avgPrices);
-                let i = 0;
-                console.log(avgPrices.length)
-                for(let ng of dataN){
+                let i, k, t;
+
+                for(let neigh_curr of dataN){
+                    i = Math.floor(Math.random() * 257);
+                    k = Math.floor(Math.random() * 257);
+                    t = Math.floor(Math.random() * 257);
+
+
                     const obj = {
-                        label: dataN[i].ID_neighbor_country,
-                        data: ng,
-                        backgroundColor: "rgba(0, 255, 0, 0.2)",
-                        borderColor: "rgba(0, 255, 0, 1)",
+                        label: document.getElementById(neigh_curr.ID_neighbor_country).getAttribute('title'),
+                        data: avgPrices.shift(),
+                        backgroundColor: `rgba(${i}, ${k}, ${t}, 0.2)`,
+                        borderColor: `rgba(${i}, ${k}, ${t}, 1)`, //rgba(0, 255, 0, 1)`,
                         borderWidth: 1
 
                     };
-                    i++;
                     priceDataN.datasets.push(obj);
 
                 }
