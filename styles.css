@@ -81,11 +81,21 @@ path:hover {
 #side-menu {
     position: fixed;
     top: 0;
-    left: -250px;     /* Initially hidden */
+    left: -250px; /* Initially hidden */
     width: 250px;
     height: 100%;
     background-color: lightgrey;
     color: black;
     transition: left 0.3s ease;
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+#close-sidebar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
 }

@@ -111,6 +111,7 @@ window.onload = function () {
                 sideMenu.style.left = "0px"; // Show menu
             }
         });
+        
 
     });
 
@@ -189,10 +190,12 @@ window.onload = function () {
         svg.setAttribute("viewBox", "0 0 1000 800");
     });
 
-    //Side bar open close control
-    const menuToggle = document.getElementById("menu-toggle");
+    // Side bar open close control
     const sideMenu = document.getElementById("side-menu");
+const closeSidebar = document.getElementById("close-sidebar");
+const menuToggle = document.getElementById("menu-toggle");
 
+if (menuToggle) {
     menuToggle.addEventListener("click", () => {
         if (sideMenu.style.left === "0px") {
             sideMenu.style.left = "-250px"; // Hide menu
@@ -200,5 +203,14 @@ window.onload = function () {
             sideMenu.style.left = "0px"; // Show menu
         }
     });
+}
+
+if (closeSidebar) {
+    closeSidebar.addEventListener("click", () => {
+        sideMenu.style.left = "-250px"; // Hide menu
+    });
+}
+
+
 
 };

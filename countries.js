@@ -274,12 +274,36 @@ const countryNeighbors = {
     "YT": []
 };
 
-console.log(countryNeighbors);
 
-//when the page is loaded , then the magic number have to be calculated and shown
-// window.onload = function ()
+function estimateStability(data) {
+    if (data.length < 2) return "Insufficient data";
 
-//     console.log("The entire page is fully loaded.");
+    // Calculate the average of the data points
+    const average = data.reduce((sum, value) => sum + value, 0) / data.length;
 
+    // Calculate the standard deviation
+    const stdDev = Math.sqrt(data.reduce((sum, value) => sum + Math.pow(value - average, 2), 0) / data.length);
 
-// ;
+    // Calculate average percentage change between consecutive years
+    let totalChange = 0;
+    for (let i = 1; i < data.length; i++) {
+        const change = Math.abs((data[i] - data[i - 1]) / data[i - 1]) * 100;
+        totalChange += change;
+    }
+    const avgPercentageChange = totalChange / (data.length - 1);
+
+    // Define thresholds for stability
+    const stdDevThreshold = average * 0.05; // 5% of the average value
+    const changeThreshold = 10; // 10% average percentage change
+
+    // Determine if the data is stable or fluctuating
+    if (stdDev <= stdDevThreshold && avgPercentageChange <= changeThreshold) {
+        return "Stable";
+    } else {
+        return "Fluctuating";
+    }
+}
+
+// Example usage
+const yearlyData = [120, 150, 170, 130, 180, 160, 200, 210, 250];
+console.log(estimateStability(yearlyData)); // Output: "Stable"
