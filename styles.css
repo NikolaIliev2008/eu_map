@@ -19,7 +19,8 @@ body {
 }
 
 path {
-    fill: #f0f0f0;  /* Remove to allow dynamic coloring of each country via JS */
+    fill: #f0f0f0;
+    /* Remove to allow dynamic coloring of each country via JS */
     stroke: #000;
     stroke-width: 0.5;
     transition: all 0.3s ease;
@@ -42,17 +43,20 @@ path:hover {
     font-size: 14px;
 }
 
+
 /* Floating Action Buttons Container */
+
 .fab-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
     display: flex;
     gap: 10px;
-
 }
 
+
 /* Floating Action Buttons */
+
 .fab {
     width: 40px;
     height: 40px;
@@ -81,7 +85,8 @@ path:hover {
 #side-menu {
     position: fixed;
     top: 0;
-    left: -250px; /* Initially hidden */
+    left: -250px;
+    /* Initially hidden */
     width: 250px;
     height: 100%;
     background-color: lightgrey;
@@ -94,20 +99,13 @@ path:hover {
     position: absolute;
     top: 10px;
     right: 10px;
+<<<<<<< HEAD
     width: 30px;  /* Прави бутона квадратен */
     height: 30px; /* Прави бутона квадратен */
+=======
+>>>>>>> 209c2150decc4f3a20b92f3a04ffe12160ab8809
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-}
-
-#close-sidebar:hover {
-    background-color: red;
-    color: white;
 }
