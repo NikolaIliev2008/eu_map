@@ -187,11 +187,35 @@ window.onload = function () {
         const sideMenu = document.getElementById("side-menu");
 
         country.addEventListener("click", () => {
-            if (sideMenu.style.left === "0px") {
-                sideMenu.style.left = "-38%"; // Hide menu
-            } else {
-                sideMenu.style.left = "0px"; // Show menu
+            const bbox = country.getBBox();
+            const padding = 20;
+            const newX = bbox.x - padding;
+            const newY = bbox.y - padding;
+            const newWidth = bbox.width + 2 * padding;
+            const newHeight = bbox.height + 2 * padding;
+        
+            let currentViewBox = svg.getAttribute("viewBox").split(" ").map(Number);
+            let steps = 20;
+            let step = 0;
+        
+            function animateZoom() {
+                step++;
+                let progress = step / steps;
+        
+                let interpolatedX = currentViewBox[0] + (newX - currentViewBox[0]) * progress;
+                let interpolatedY = currentViewBox[1] + (newY - currentViewBox[1]) * progress;
+                let interpolatedWidth = currentViewBox[2] + (newWidth - currentViewBox[2]) * progress;
+                let interpolatedHeight = currentViewBox[3] + (newHeight - currentViewBox[3]) * progress;
+        
+                svg.setAttribute("viewBox", `${interpolatedX} ${interpolatedY} ${interpolatedWidth} ${interpolatedHeight}`);
+        
+                if (step < steps) {
+                    requestAnimationFrame(animateZoom);
+                }
             }
+        
+            requestAnimationFrame(animateZoom);
+            sideMenu.style.left = "0px";
         });
     });
 
@@ -276,7 +300,7 @@ window.onload = function () {
     if (menuToggle) {
         menuToggle.addEventListener("click", () => {
             if (sideMenu.style.left === "0px") {
-                sideMenu.style.left = "-38%"; // Hide menu
+                sideMenu.style.left = "-30%"; // Hide menu
             } else {
                 sideMenu.style.left = "0px"; // Show menu
             }
@@ -285,7 +309,7 @@ window.onload = function () {
 
     if (closeSidebar) {
         closeSidebar.addEventListener("click", () => {
-            sideMenu.style.left = "-38%"; // Hide menu
+            sideMenu.style.left = "-30%"; // Hide menu
         });
     }
 };

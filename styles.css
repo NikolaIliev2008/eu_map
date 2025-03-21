@@ -89,9 +89,9 @@ path:hover {
 #side-menu {
     position: fixed;
     top: 0;
-    left: -38%;
+    left: -30%;
     /* Initially hidden */
-    width: 35%;
+    width: 27%;
     height: 98%;
     background-color: lightgrey;
     color: black;
