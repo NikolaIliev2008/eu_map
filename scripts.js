@@ -1,5 +1,4 @@
-
-//Color each country based on the price index Take this from database
+// Color each country based on the price index (if needed)
 const countryIndexData = [
     { id: "US", index: 5 },
     { id: "FR", index: 15 },
@@ -10,21 +9,15 @@ const countryIndexData = [
 
 function getColorByPriceIndex(index) {
     if (index < 10) {
-        return ' #ff0088';
-    }
-    else if (index >= 10 && index < 20) {
-        return ' #aa12de';
-    }
-
-    else {
+        return '#ff0088';
+    } else if (index >= 10 && index < 20) {
+        return '#aa12de';
+    } else {
         return 'white';
     }
 }
 
-
-
 window.onload = function () {
-
     const tooltip = document.getElementById('tooltip');
     const countries = document.querySelectorAll('#eu-map path');
     let chartInstance = null;
@@ -32,52 +25,82 @@ window.onload = function () {
     let isTooltipVisible = false;
 
     countries.forEach(country => {
-        country.addEventListener('mouseenter', (e) => {
-            const countryName = e.target.getAttribute('title');
-            const priceData = {
-                labels: ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"],
-                datasets: [{
-                    label: countryName,
-                    data: [120, 150, 170, 130, 180, 160, 200, 210, 250],
-                    backgroundColor: "rgba(255, 0, 0, 0.2)",
-                    borderColor: "rgba(255, 0, 0, 1)",
-                    borderWidth: 1
-                },
-                {
-                    label: countryName + ' Nab',
-                    data: [120, 156, 173, 130, 190, 160, 210, 210, 240],
-                    backgroundColor: "rgba(0, 255, 0, 0.2)",
-                    borderColor: "rgba(0, 255, 0, 1)",
-                    borderWidth: 1
-                }]
-            };
+        country.addEventListener('mouseenter', async (e) => {
+            const countryCode = e.target.id; // Get the country code from the SVG path's ID
+            const countryName = e.target.getAttribute('title'); // Get the country name from the SVG title attribute
 
-            tooltip.innerHTML = `${countryName}<canvas id="priceChart" width="400" height="200"></canvas>`;
-            tooltip.style.display = 'block';
-            isTooltipVisible = true;
+            try {
+                // Fetch data from the backend
+                const response = await fetch(`http://localhost:3006/user/${countryCode}`);
+                const data = await response.json();
 
-            setTimeout(() => {
-                const ctx = document.getElementById("priceChart").getContext("2d");
-                if (chartInstance) chartInstance.destroy();
-                chartInstance = new Chart(ctx, {
-                    type: "line",
-                    data: priceData,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { labels: { color: 'white' } }
+                // Prepare data for the chart
+                const labels = data.map(entry => entry.Year_buying); // Years
+                const price2Rooms = data.map(entry => entry.Price_2_rooms); // Prices for 2-room properties
+                const price3Rooms = data.map(entry => entry.Price_3_rooms); // Prices for 3-room properties
+                const priceHouse = data.map(entry => entry.Price_house); // Prices for houses
+
+                // Create the chart dataset
+                const priceData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: `${countryName} - 2 Rooms`,
+                            data: price2Rooms,
+                            backgroundColor: "rgba(255, 0, 0, 0.2)",
+                            borderColor: "rgba(255, 0, 0, 1)",
+                            borderWidth: 1
                         },
-                        scales: {
-                            x: { ticks: { color: 'white' } },
-                            y: {
-                                ticks: { color: 'white' },
-                                beginAtZero: true,
-                                title: { display: true, text: "Price (in Euro)", color: 'white' }
+                        {
+                            label: `${countryName} - 3 Rooms`,
+                            data: price3Rooms,
+                            backgroundColor: "rgba(0, 255, 0, 0.2)",
+                            borderColor: "rgba(0, 255, 0, 1)",
+                            borderWidth: 1
+                        },
+                        {
+                            label: `${countryName} - House`,
+                            data: priceHouse,
+                            backgroundColor: "rgba(0, 0, 255, 0.2)",
+                            borderColor: "rgba(0, 0, 255, 1)",
+                            borderWidth: 1
+                        }
+                    ]
+                };
+
+                // Display the tooltip with the chart
+                tooltip.innerHTML = `${countryName}<canvas id="priceChart" width="400" height="200"></canvas>`;
+                tooltip.style.display = 'block';
+                isTooltipVisible = true;
+
+                // Render the chart
+                setTimeout(() => {
+                    const ctx = document.getElementById("priceChart").getContext("2d");
+                    if (chartInstance) chartInstance.destroy();
+                    chartInstance = new Chart(ctx, {
+                        type: "line",
+                        data: priceData,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { labels: { color: 'white' } }
+                            },
+                            scales: {
+                                x: { ticks: { color: 'white' } },
+                                y: {
+                                    ticks: { color: 'white' },
+                                    beginAtZero: true,
+                                    title: { display: true, text: "Price (in Euro)", color: 'white' }
+                                }
                             }
                         }
-                    }
-                });
-            }, 50);
+                    });
+                }, 50);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                tooltip.innerHTML = `Failed to load data for ${countryName}`;
+                tooltip.style.display = 'block';
+            }
         });
 
         country.addEventListener('mousemove', (e) => {
@@ -97,11 +120,7 @@ window.onload = function () {
             if (chartInstance) chartInstance.destroy();
         });
 
-        //Color each country based on the price index 
-        //const index = countryIndexData.find(x=>x.id === country.id)?.index;
-        //country.setAttribute("fill", getColorByPriceIndex(index));
-
-        //Side bar control
+        // Sidebar control
         const sideMenu = document.getElementById("side-menu");
 
         country.addEventListener("click", () => {
@@ -111,8 +130,6 @@ window.onload = function () {
                 sideMenu.style.left = "0px"; // Show menu
             }
         });
-        
-
     });
 
     // SVG Dragging Functionality
@@ -146,9 +163,7 @@ window.onload = function () {
         svg.style.cursor = 'grab';
     });
 
-
-    //SVG Zoom 
-
+    // SVG Zoom
     const viewBox = svg.viewBox.baseVal;
 
     function zoomIn() {
@@ -156,14 +171,14 @@ window.onload = function () {
         viewBox.height *= 0.9;
         viewBox.x += viewBox.width * 0.05;
         viewBox.y += viewBox.height * 0.05;
-    };
+    }
 
     function zoomOut() {
         viewBox.width /= 0.9;
         viewBox.height /= 0.9;
         viewBox.x -= viewBox.width * 0.05;
         viewBox.y -= viewBox.height * 0.05;
-    };
+    }
 
     svg.addEventListener("wheel", (e) => {
         e.preventDefault();
@@ -190,7 +205,7 @@ window.onload = function () {
         svg.setAttribute("viewBox", "0 0 1000 800");
     });
 
-    // Side bar open close control
+    // Sidebar open/close control
     const sideMenu = document.getElementById("side-menu");
     const closeSidebar = document.getElementById("close-sidebar");
     const menuToggle = document.getElementById("menu-toggle");
@@ -210,5 +225,4 @@ window.onload = function () {
             sideMenu.style.left = "-250px"; // Hide menu
         });
     }
-
 };
