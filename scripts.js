@@ -120,6 +120,7 @@ window.onload = function () {
             if (chartInstance) chartInstance.destroy();
         });
 
+<<<<<<< HEAD
         //Color each country based on the price index 
         //const index = countryIndexData.find(x=>x.id === country.id)?.index;
         //country.setAttribute("fill", getColorByPriceIndex(index));
@@ -155,6 +156,8 @@ window.onload = function () {
         
             requestAnimationFrame(animateZoom);
             sideMenu.style.left = "0px";
+=======
+>>>>>>> b9bc234869c8c3c60e63bd758a72a9c4eeea53a2
         // Sidebar control
         const sideMenu = document.getElementById("side-menu");
 
