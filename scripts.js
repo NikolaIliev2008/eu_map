@@ -20,7 +20,9 @@ function getColorByPriceIndex(index) {
 window.onload = function () {
     const tooltip = document.getElementById('tooltip');
     const countries = document.querySelectorAll('#eu-map path');
+    const buyButtons = document.getElementById("btn-container");
     let chartInstance = null;
+    let chartInstanceN = null;
     let lastMouseX = 0, lastMouseY = 0;
     let isTooltipVisible = false;
 
@@ -33,13 +35,58 @@ window.onload = function () {
                 // Fetch data from the backend
                 const response = await fetch(`http://localhost:3006/user/${countryCode}`);
                 const data = await response.json();
-
+                const responseN = await fetch(`http://localhost:3006/neigh/${countryCode}`);
+                const dataN = await responseN.json();
+                //forEach dataN -> request
+                // console.log(`DataN: ${dataN}`);
+                let avgPrices = [];
+                // let labelsn = [];
+                for(let v of dataN){
+                    const x = await fetch(`http://localhost:3006/user/${v.ID_neighbor_country}`);
+                    const dataX = await x.json();
+                    avgPrices.push(dataX.map(entry => (entry.Price_2_rooms + entry.Price_3_rooms +  entry.Price_house) / 3)); // Prices for 2-room properties
+                    // labelsn.push(v.ID_neighbor_country);
+                }
+                
                 // Prepare data for the chart
                 const labels = data.map(entry => entry.Year_buying); // Years
                 const price2Rooms = data.map(entry => entry.Price_2_rooms); // Prices for 2-room properties
                 const price3Rooms = data.map(entry => entry.Price_3_rooms); // Prices for 3-room properties
                 const priceHouse = data.map(entry => entry.Price_house); // Prices for houses
 
+                const currPrice = data.map(entry => (entry.Price_2_rooms + entry.Price_3_rooms +  entry.Price_house) / 3); // Prices for 2-room properties
+                const priceDataN = {
+                    labels,
+                    datasets : []
+                };
+
+                //for current
+                priceDataN.datasets.push({
+                    label: countryName,
+                    data: currPrice,
+                    backgroundColor: "rgba(255, 0, 0, 0.2)",
+                    borderColor: "rgba(255, 0, 0, 1)",
+                    borderWidth: 1
+                });
+                let i, k, t;
+
+                for(let neigh_curr of dataN){
+                    i = Math.floor(Math.random() * 257);
+                    k = Math.floor(Math.random() * 257);
+                    t = Math.floor(Math.random() * 257);
+
+
+                    const obj = {
+                        label: document.getElementById(neigh_curr.ID_neighbor_country).getAttribute('title'),
+                        data: avgPrices.shift(),
+                        backgroundColor: `rgba(${i}, ${k}, ${t}, 0.2)`,
+                        borderColor: `rgba(${i}, ${k}, ${t}, 1)`, //rgba(0, 255, 0, 1)`,
+                        borderWidth: 1
+
+                    };
+                    priceDataN.datasets.push(obj);
+
+                }
                 // Create the chart dataset
                 const priceData = {
                     labels: labels,
@@ -69,7 +116,7 @@ window.onload = function () {
                 };
 
                 // Display the tooltip with the chart
-                tooltip.innerHTML = `${countryName}<canvas id="priceChart" width="400" height="200"></canvas>`;
+                tooltip.innerHTML = `${countryName}`;
                 tooltip.style.display = 'block';
                 isTooltipVisible = true;
 
@@ -83,19 +130,42 @@ window.onload = function () {
                         options: {
                             responsive: true,
                             plugins: {
-                                legend: { labels: { color: 'white' } }
+                                legend: { labels: { color: 'black' , font: {size:10}, boxWidth: 10} }
                             },
                             scales: {
-                                x: { ticks: { color: 'white' } },
+                                x: { ticks: { color: 'black' } },
                                 y: {
-                                    ticks: { color: 'white' },
+                                    ticks: { color: 'black' },
                                     beginAtZero: true,
-                                    title: { display: true, text: "Price (in Euro)", color: 'white' }
+                                    title: { display: true, text: "Price (in Euro)", color: 'black' }
+                                }
+                            }
+                        }
+                    });
+                    const ctxn = document.getElementById("neighbourChart").getContext("2d");
+                    if (chartInstanceN) chartInstanceN.destroy();
+                    chartInstanceN = new Chart(ctxn, {
+                        type: "line",
+                        data: priceDataN,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { labels: { color: 'black', font: {size: 10} , boxWidth: 10}  }
+                            },
+                            scales: {
+                                x: { ticks: { color: 'black' } },
+                                y: {
+                                    ticks: { color: 'black' },
+                                    beginAtZero: true,
+                                    title: { display: true, text: "Price (in Euro)", color: 'black' }
                                 }
                             }
                         }
                     });
                 }, 50);
+
+                //make buttons visible
+                buyButtons.style.display = 'flex';
             } catch (error) {
                 console.error('Error fetching data:', error);
                 tooltip.innerHTML = `Failed to load data for ${countryName}`;
@@ -118,6 +188,8 @@ window.onload = function () {
             tooltip.style.display = 'none';
             isTooltipVisible = false;
             if (chartInstance) chartInstance.destroy();
+            if (chartInstanceN) chartInstanceN.destroy();
+            buyButtons.style.display = 'none';
         });
 
         // Sidebar control

@@ -99,12 +99,19 @@ path:hover {
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
     border-radius: 15px;
     margin: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#side-menu > *{
+    margin-top: 8px;
 }
 
 #close-sidebar {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px;
+    right: 5px;
     width: 30px;  /* Прави бутона квадратен */
     height: 30px; /* Прави бутона квадратен */
     background: none;
@@ -116,13 +123,46 @@ path:hover {
     align-items: center;
     justify-content: center;
     border-radius: 4px;
+    margin: unset;
 }
 
 #close-sidebar:hover {
     background-color: red;
     color: white;
 }
-h1, p{
+h3, p{
     display: flex;
     justify-content: center;
+}
+
+#btn-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.buy-sell-buttons {
+    width: 80px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    padding: 5px;
+}
+
+.buy-sell-buttons:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+.buy-sell-buttons:active {
+    transform: scale(0.9);
 }
