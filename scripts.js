@@ -120,11 +120,9 @@ window.onload = function () {
             if (chartInstance) chartInstance.destroy();
         });
 
-        //Color each country based on the price index 
-        //const index = countryIndexData.find(x=>x.id === country.id)?.index;
-        //country.setAttribute("fill", getColorByPriceIndex(index));
+        // Sidebar control
+        const sideMenu = document.getElementById("side-menu");
 
-        //Side bar control
         country.addEventListener("click", () => {
             const bbox = country.getBBox();
             const padding = 20;
@@ -155,15 +153,6 @@ window.onload = function () {
         
             requestAnimationFrame(animateZoom);
             sideMenu.style.left = "0px";
-        // Sidebar control
-        const sideMenu = document.getElementById("side-menu");
-
-        country.addEventListener("click", () => {
-            if (sideMenu.style.left === "0px") {
-                sideMenu.style.left = "-38%"; // Hide menu
-            } else {
-                sideMenu.style.left = "0px"; // Show menu
-            }
         });
     });
 
@@ -248,7 +237,7 @@ window.onload = function () {
     if (menuToggle) {
         menuToggle.addEventListener("click", () => {
             if (sideMenu.style.left === "0px") {
-                sideMenu.style.left = "-38%"; // Hide menu
+                sideMenu.style.left = "-30%"; // Hide menu
             } else {
                 sideMenu.style.left = "0px"; // Show menu
             }
@@ -257,8 +246,7 @@ window.onload = function () {
 
     if (closeSidebar) {
         closeSidebar.addEventListener("click", () => {
-            sideMenu.style.left = "-38%"; // Hide menu
+            sideMenu.style.left = "-30%"; // Hide menu
         });
     }
-});
-}
+};
